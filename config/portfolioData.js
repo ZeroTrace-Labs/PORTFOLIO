@@ -31,7 +31,7 @@ const portfolioConfig = {
             issueDate: 'June 2026',
             description: 'Specialized training covering the complete penetration testing lifecycle, including reconnaissance, vulnerability assessment, network and web application testing, post-exploitation, and professional security reporting.',
             skillsLearned: ['Penetration Testing, Vulnerability Assessment, Reconnaissance & Enumeration, Network Security Testing, Web Application Security, Cloud Security Assessment, Social Engineering Concepts, Post-Exploitation Techniques, Security Reporting, Risk Analysis.'],
-            image: 'assets/certificates/CompTIA PenTest+.JPEG',
+            image: 'assets/certificates/CompTIA PenTest+.jpeg',
             verificationLink: 'https://www.coursera.org/account/accomplishments/specialization/VFTRHURXPQZ4'
         },
         {
@@ -41,7 +41,7 @@ const portfolioConfig = {
             issueDate: 'June 2026',
             description: 'Specialized cybersecurity training covering risk management, network security, cryptography, identity management, cloud security, incident response, digital forensics, and practical security assessment using industry-standard tools.',
             skillsLearned: ['Security Fundamentals, Network Security, Identity & Access Management, Cryptography, Security Operations, Endpoint & Cloud Security, Digital forensics, Risk Management, Security Assessment & Testing, Incident Response.'],
-            image: 'assets/certificates/CompTIA Security+.JPEG',
+            image: 'assets/certificates/CompTIA Security+.jpeg',
             verificationLink: 'https://www.coursera.org/account/accomplishments/specialization/N24ML5WA1APM'
         },
         {
@@ -51,17 +51,18 @@ const portfolioConfig = {
             issueDate: 'June 2026',
             description: 'Completed a hands-on specialization in Linux Bash scripting and shell programming, gaining expertise in command-line operations, automation, AWK-based text processing, troubleshooting, and script development. Applied these skills to real-world projects involving system administration, DevOps, and IT automation to streamline workflows and enhance productivity.',
             skillsLearned: ['Linux Command Line, Bash Scripting, Shell  Programming, Task Automation, AWK Text Processing  File and Directory Management, Troubleshooting & Debugging, DevOps and System, Administration Fundamentals'],
-            image: 'assets/certificates/Linux Bash Scripting & Shell Programming.JPEG',
+            image: 'assets/certificates/Linux Bash Scripting & Shell Programming.jpeg',
             verificationLink: 'https://www.coursera.org/account/accomplishments/specialization/WFZMFY48KKLB'
         },
         {
             id: 4,
             title: 'CompTIA Network+',
+
             issuer: 'Infosec Institute / Coursera',
             issueDate: 'June 2026',
             description: 'Validated expertise in networking fundamentals, including TCP/IP, routing and switching, subnetting, wireless networking, network security, and troubleshooting. Gained hands-on skills to support, maintain, and optimize enterprise network environments.',
             skillsLearned: ['Network Configuration and Management, TCP/IP and Network Protocols, Network Troubleshooting, Routing and Switching, Network Security, IP Addressing and Subnetting, Wireless Networking (WLAN), Network Infrastructure and Services'],
-            image: 'assets/certificates/CompTIA Network+.JPEG',
+            image: 'assets/certificates/CompTIA Network+.jpeg',
             verificationLink: 'https://www.coursera.org/account/accomplishments/records/PSPPFP1E1QC1'
         }
     ],
