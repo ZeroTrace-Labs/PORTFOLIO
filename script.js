@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     populateHomeLab();
     populateBlog();
     fetchGitHubData();
+    initializeCertificateModal();
     initializeScrollAnimations();
 });
 
@@ -62,7 +63,7 @@ function populateCertifications() {
     if (!grid || !portfolioConfig) return;
 
     grid.innerHTML = portfolioConfig.certifications.map(cert => `
-        <div class="certification-card">
+        <div class="certification-card" data-cert-id="${cert.id}">
             <div class="certification-image">
                 ${cert.image ? `<img src="${cert.image}" alt="${cert.title} certificate">` : `<i class='bx bx-medal'></i>`}
             </div>
@@ -78,6 +79,49 @@ function populateCertifications() {
         </div>
     `).join('');
 }
+
+function initializeCertificateModal() {
+    const grid = document.getElementById('certificationsGrid');
+    const modal = document.getElementById('certModal');
+    const modalImg = document.querySelector('#certModal img');
+    const modalTitle = document.getElementById('certModalTitle');
+    const modalIssuer = document.getElementById('certModalIssuer');
+    const modalDate = document.getElementById('certModalDate');
+    const modalVerify = document.getElementById('certModalVerify');
+    const modalClose = document.getElementById('certModalClose');
+
+    if (!grid || !modal || !modalImg || !modalTitle || !modalIssuer || !modalDate || !modalVerify || !modalClose) return;
+
+    grid.addEventListener('click', event => {
+        const card = event.target.closest('.certification-card');
+        if (!card) return;
+        if (event.target.closest('.certification-button')) return;
+
+        const certId = card.getAttribute('data-cert-id');
+        const cert = portfolioConfig.certifications.find(item => String(item.id) === certId);
+        if (!cert || !cert.image) return;
+
+        modalImg.src = cert.image;
+        modalImg.alt = `${cert.title} certificate`;
+        modalTitle.textContent = cert.title;
+        modalIssuer.textContent = cert.issuer;
+        modalDate.textContent = cert.issueDate || cert.dateEarned || '';
+        modalVerify.href = cert.verificationLink || cert.verificationUrl || '#';
+        modalVerify.style.display = cert.verificationLink || cert.verificationUrl ? 'inline-flex' : 'none';
+        modal.classList.add('active');
+    });
+
+    modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', event => {
+        if (event.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+}
+
 
 // ========== PROJECTS SECTION ==========
 function populateProjects() {

@@ -514,6 +514,23 @@
     </div>
 </section>
 
+<div id="certModal" class="cert-modal" aria-hidden="true">
+    <div class="modal-content">
+        <button id="certModalClose" aria-label="Close certificate viewer">×</button>
+        <div class="modal-body">
+            <div class="modal-image">
+                <img src="" alt="Certificate preview">
+            </div>
+            <div class="modal-meta">
+                <h2 id="certModalTitle"></h2>
+                <p id="certModalIssuer"></p>
+                <p id="certModalDate"></p>
+                <a id="certModalVerify" href="#" target="_blank">Verify Certification</a>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- configuration and scripts -->
      <script type="module" src="config/portfolioData.js" defer></script>
      <script src="script.js" defer></script>
