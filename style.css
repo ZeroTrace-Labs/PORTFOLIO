@@ -3489,7 +3489,6 @@ position: relative;
 }
 
 @media (max-width: 600px) {
-    .certifications-grid,
     .projects-grid,
     .skills-categories,
     .homelab-grid,
@@ -3499,7 +3498,18 @@ position: relative;
         padding: 0 0.5rem;
     }
 
-    .why-hire-grid,
+    .why-hire-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.9rem;
+        padding: 0 0.5rem;
+    }
+
+    .certifications-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.9rem;
+        padding: 0 0.5rem;
+    }
+
     .services-container {
         grid-template-columns: 1fr;
         gap: 0.9rem;
