@@ -3383,13 +3383,15 @@ position: relative;
 
     /* Certificates: 2 cards per row */
     .certifications-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.8rem;
+        grid-auto-rows: auto;
     }
 
     .certification-card {
         padding: 1rem;
         border-radius: 1rem;
+        cursor: pointer;
     }
 
     .certification-image {
@@ -3472,15 +3474,15 @@ position: relative;
     .skills-categories,
     .homelab-grid,
     .blog-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.8rem;
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
         padding: 0 0.5rem;
     }
 
     .why-hire-grid,
     .services-container {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.8rem;
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
         padding: 0 0.5rem;
     }
 
@@ -3538,6 +3540,7 @@ position: relative;
 }
 
 #certModal .modal-content {
+    position: relative;
     width: min(95vw, 80rem);
     max-height: min(95vh, 80rem);
     background: rgba(10, 10, 10, 0.98);

@@ -92,6 +92,14 @@ function initializeCertificateModal() {
 
     if (!grid || !modal || !modalImg || !modalTitle || !modalIssuer || !modalDate || !modalVerify || !modalClose) return;
 
+    const setModalState = (isOpen) => {
+        modal.classList.toggle('active', isOpen);
+        modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        if (!isOpen) {
+            modalImg.src = '';
+        }
+    };
+
     grid.addEventListener('click', event => {
         const card = event.target.closest('.certification-card');
         if (!card) return;
@@ -99,25 +107,29 @@ function initializeCertificateModal() {
 
         const certId = card.getAttribute('data-cert-id');
         const cert = portfolioConfig.certifications.find(item => String(item.id) === certId);
-        if (!cert || !cert.image) return;
+        if (!cert) return;
 
-        modalImg.src = cert.image;
+        modalImg.src = cert.image || '';
         modalImg.alt = `${cert.title} certificate`;
         modalTitle.textContent = cert.title;
-        modalIssuer.textContent = cert.issuer;
+        modalIssuer.textContent = cert.issuer || '';
         modalDate.textContent = cert.issueDate || cert.dateEarned || '';
         modalVerify.href = cert.verificationLink || cert.verificationUrl || '#';
         modalVerify.style.display = cert.verificationLink || cert.verificationUrl ? 'inline-flex' : 'none';
-        modal.classList.add('active');
+        setModalState(true);
     });
 
-    modalClose.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
+    modalClose.addEventListener('click', () => setModalState(false));
 
     modal.addEventListener('click', event => {
         if (event.target === modal) {
-            modal.classList.remove('active');
+            setModalState(false);
+        }
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && modal.classList.contains('active')) {
+            setModalState(false);
         }
     });
 }
