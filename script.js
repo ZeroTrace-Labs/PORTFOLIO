@@ -5,7 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     populateSkills();
     populateHomeLab();
     populateBlog();
-    fetchGitHubData();
+    // Fetch GitHub data asynchronously without blocking page load
+    if (document.readyState === 'loading') {
+        setTimeout(() => fetchGitHubData(), 100);
+    } else {
+        fetchGitHubData();
+    }
     initializeCertificateModal();
     initializeScrollAnimations();
 });
@@ -17,7 +22,9 @@ navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
         
-        const targetId = this.getAttribute('href').substring(1);
+        const href = this.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const targetId = href.substring(1);
         const targetSection = document.getElementById(targetId);
         
         if (targetSection) {
@@ -36,26 +43,30 @@ navLinks.forEach(link => {
     });
 });
 
-// Update active navigation link on scroll
+// Update active navigation link on scroll (debounced)
 const sections = document.querySelectorAll('section');
+let scrollTimeout;
 window.addEventListener('scroll', () => {
-    const scrollPosition = window.scrollY + 100;
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        const scrollPosition = window.scrollY + 100;
         
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    });
-});
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, 100);
+}, { passive: true });
 
 // ========== CERTIFICATIONS SECTION ==========
 function populateCertifications() {
@@ -152,10 +163,10 @@ function populateProjects() {
                     ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
                 </div>
                 <div class="project-links">
-                    <a href="${project.githubUrl}" target="_blank" class="project-link">
+                    <a href="${project.githubLink || project.githubUrl || '#'}" target="_blank" class="project-link">
                         <i class='bx bxl-github'></i> GitHub
                     </a>
-                    ${project.reportUrl ? `<a href="${project.reportUrl}" target="_blank" class="project-link secondary">
+                    ${(project.reportUrl || project.reportLink) ? `<a href="${project.reportUrl || project.reportLink}" target="_blank" class="project-link secondary">
                         <i class='bx bx-file'></i> Report
                     </a>` : ''}
                 </div>
@@ -215,7 +226,7 @@ function populateHomeLab() {
 // ========== BLOG SECTION ==========
 function populateBlog() {
     const grid = document.getElementById('blogGrid');
-    if (!grid || !portfolioConfig) return;
+    if (!grid || !portfolioConfig || !portfolioConfig.blog) return;
 
     grid.innerHTML = portfolioConfig.blog.map(article => `
         <div class="blog-card">
@@ -228,12 +239,25 @@ function populateBlog() {
                 <div class="blog-meta">
                     <span>${article.date}</span>
                 </div>
-                <button class="blog-read-more" onclick="alert('Full article not yet available')">
+                <button class="blog-read-more" data-article-id="${article.id}">
                     Read More →
                 </button>
             </div>
         </div>
     `).join('');
+    
+    // Add event listener for blog read more buttons
+    document.querySelectorAll('.blog-read-more').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const articleId = btn.getAttribute('data-article-id');
+            const article = portfolioConfig.blog.find(a => String(a.id) === articleId);
+            if (article && article.url) {
+                window.location.href = article.url;
+            } else {
+                alert('Full article not yet available');
+            }
+        });
+    });
 }
 
 // ========== GITHUB INTEGRATION ==========
@@ -241,19 +265,36 @@ async function fetchGitHubData() {
     const statsContainer = document.getElementById('githubStats');
     const repoContainer = document.getElementById('githubFeatured');
     
-    if (!statsContainer || !portfolioConfig) return;
+    if (!statsContainer || !portfolioConfig || !portfolioConfig.github) return;
 
     try {
         const username = portfolioConfig.github.username;
         const apiUrl = portfolioConfig.github.apiUrl;
+        
+        if (!username || !apiUrl) return;
+        
+        // Set a timeout for GitHub API calls (3 seconds)
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
 
-        // Fetch user data
-        const userResponse = await fetch(apiUrl);
-        const userData = await userResponse.json();
+        // Fetch both user data and repositories in parallel with timeout
+        const [userResponse, reposResponse] = await Promise.all([
+            fetch(apiUrl, { signal: controller.signal }).catch(() => null),
+            fetch(`${apiUrl}/repos?sort=stars&per_page=6`, { signal: controller.signal }).catch(() => null)
+        ]);
 
-        // Fetch repositories
-        const reposResponse = await fetch(`${apiUrl}/repos?sort=stars&per_page=6`);
-        const repos = await reposResponse.json();
+        clearTimeout(timeout);
+
+        let userData = null;
+        let repos = [];
+
+        // Safely parse responses
+        if (userResponse && userResponse.ok) {
+            userData = await userResponse.json();
+        }
+        if (reposResponse && reposResponse.ok) {
+            repos = await reposResponse.json();
+        }
 
         // Populate stats
         if (statsContainer && userData) {
@@ -274,7 +315,7 @@ async function fetchGitHubData() {
         }
 
         // Populate featured repositories
-        if (repoContainer && repos.length > 0) {
+        if (repoContainer && Array.isArray(repos) && repos.length > 0) {
             repoContainer.innerHTML = repos.map(repo => `
                 <div class="github-repo">
                     <div class="repo-name">
@@ -314,8 +355,8 @@ resumeBtns.forEach((btn, idx) => {
             resumeDetails[idx].classList.add('active');
         }
 
-        resumeBtns.forEach(btn => {
-            btn.classList.remove('active');
+        resumeBtns.forEach(resumeBtn => {
+            resumeBtn.classList.remove('active');
         });
         btn.classList.add('active');
     });
@@ -380,16 +421,16 @@ if (contactForm) {
 }
 
 function showFormMessage(message, type) {
-    if (formMessage) {
-        formMessage.textContent = message;
-        formMessage.className = `form-message ${type}`;
-        formMessage.style.display = 'block';
-
-        formMessage.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
-    }
+    if (!formMessage) return;
+    
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type}`;
+    formMessage.style.display = 'block';
+    
+    formMessage.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
 }
 
 // ========== TESTIMONIALS ==========
@@ -399,28 +440,11 @@ testimonialCards.forEach((card, index) => {
     card.style.setProperty('--testimonial-index', index + 1);
     
     card.addEventListener('mouseenter', () => {
-        const stars = card.querySelectorAll('.testimonial-rating i');
-        stars.forEach(star => {
-            star.style.transform = 'scale(1.2) rotate(10deg)';
-            star.style.transition = 'all 0.3s ease';
-        });
-        
-        const avatar = card.querySelector('.author-avatar');
-        if (avatar) {
-            avatar.style.transform = 'scale(1.1) rotate(5deg)';
-        }
+        card.classList.add('hovered');
     });
     
     card.addEventListener('mouseleave', () => {
-        const stars = card.querySelectorAll('.testimonial-rating i');
-        stars.forEach(star => {
-            star.style.transform = 'scale(1) rotate(0deg)';
-        });
-        
-        const avatar = card.querySelector('.author-avatar');
-        if (avatar) {
-            avatar.style.transform = 'scale(1) rotate(0deg)';
-        }
+        card.classList.remove('hovered');
     });
 });
 

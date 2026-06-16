@@ -1553,6 +1553,26 @@ section.active {
     left: 100%;
 }
 
+.testimonial-card.hovered {
+    border-color: var(--main-color);
+    transform: translateY(-1rem);
+    box-shadow: 0 2rem 4rem rgba(0, 212, 255, 0.2);
+}
+
+.testimonial-card.hovered::before {
+    left: 100%;
+}
+
+.testimonial-card.hovered .testimonial-rating i {
+    transform: scale(1.2) rotate(10deg);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card.hovered .author-avatar {
+    transform: scale(1.1) rotate(5deg);
+    transition: all 0.3s ease;
+}
+
 .testimonial-content {
     position: relative;
     z-index: 2;
