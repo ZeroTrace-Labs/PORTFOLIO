@@ -3488,58 +3488,96 @@ position: relative;
     }
 }
 
-@media (max-width: 600px) {
-    .certifications-grid,
-    .projects-grid,
-    .skills-categories,
-    .homelab-grid,
-    .blog-grid {
-        grid-template-columns: 1fr;
-        gap: 0.9rem;
-        padding: 0 0.5rem;
+@media (max-width: 480px) {
+    .why-hire-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 0.7rem !important;
+        overflow-x: auto;
+        min-width: 0;
     }
 
-    .why-hire-grid,
-    .services-container {
-        grid-template-columns: 1fr;
-        gap: 0.9rem;
-        padding: 0 0.5rem;
+    .why-hire-card {
+        padding: 0.5rem 0.4rem !important;
+        min-width: 0;
     }
 
-    .certification-card,
-    .project-card,
-    .skill-category,
-    .lab-card,
-    .blog-card,
-    .why-hire-card,
-    .service-box {
-        padding: 1rem;
+    .why-hire-card h3 {
+        font-size: 0.85rem;
     }
 
-    .project-image,
-    .blog-image {
-        height: 14rem;
+    .why-hire-card p {
+        font-size: 0.75rem;
     }
 
-    .lab-image {
-        height: 12rem;
+    .why-hire-icon {
+        font-size: 1.3rem;
     }
 
-    .certification-title,
-    .project-title,
-    .skill-category-name,
-    .lab-title,
-    .blog-title {
-        font-size: 1.4rem;
+    .certifications-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.7rem !important;
     }
 
-    .github-stats {
-        grid-template-columns: 1fr;
+    .certification-card {
+        padding: 0.7rem !important;
     }
 
-    .github-content {
-        display: flex;
-        flex-direction: column;
+    .certification-image {
+        height: 7rem;
+    }
+
+    .certification-image img {
+        max-height: 7rem;
+        object-fit: contain;
+    }
+
+    .certification-title {
+        font-size: 0.9rem;
+    }
+
+    .certification-issuer {
+        font-size: 0.8rem;
+    }
+
+    .certification-button {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .why-hire-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 0.5rem !important;
+        overflow-x: auto;
+        min-width: 0;
+    }
+
+    .why-hire-card {
+        padding: 0.4rem 0.3rem !important;
+        min-width: 0;
+    }
+
+    .why-hire-card h3 {
+        font-size: 0.75rem;
+    }
+
+    .why-hire-card p {
+        font-size: 0.65rem;
+        line-height: 1.2;
+    }
+
+    .certifications-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.6rem !important;
+    }
+
+    .certification-card {
+        padding: 0.6rem !important;
+    }
+
+    .certification-image {
+        height: 6rem;
     }
 }
 
