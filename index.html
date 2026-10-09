@@ -49,16 +49,16 @@
 
             <div class="professional-highlights">
                 <div class="highlight-item">
-                    <i class='bx bx-shield-check'></i>
-                    <span>Quality Assurance Tester</span>
+                    <i class='bx bx-shield' aria-hidden="true"></i>
+                    <span>Threat Analysis</span>
                 </div>
                 <div class="highlight-item">
-                    <i class='bx bx-code-alt'></i>
-                    <span>Cybersecurity</span>
+                    <i class='bx bx-search-alt' aria-hidden="true"></i>
+                    <span>Vulnerability Assessment</span>
                 </div>
                 <div class="highlight-item">
-                    <i class='bx bx-network-chart'></i>
-                    <span>Network Administration</span>
+                    <i class='bx bxl-linux' aria-hidden="true"></i>
+                    <span>System Hardening</span>
                 </div>
             </div>
 
@@ -66,15 +66,15 @@
 
             <div class="stats">
                 <div class="stat-item">
-                    <span class="stat-number">1+</span>
+                    <span class="stat-number"><i class='bx bx-folder-open' aria-hidden="true"></i>1+</span>
                     <span class="stat-label">Projects Completed</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">1+</span>
+                    <span class="stat-number"><i class='bx bx-time-five' aria-hidden="true"></i>1+</span>
                     <span class="stat-label">Years Experience</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">65%</span>
+                    <span class="stat-number"><i class='bx bx-check-shield' aria-hidden="true"></i>65%</span>
                     <span class="stat-label">Report Accuracy</span>
                 </div>
             </div>
@@ -201,14 +201,32 @@
 <!-- Blog Section -->
 <section class="blog active" id="blog" data-effect="fade">
     <div class="blog-container">
-        <h2 class="heading">Security <span>Blog</span></h2>
-        <p class="section-subtitle">Technical articles, write-ups, and research focused on cybersecurity learning, tools, investigations, and practical security insights.</p>
-        <div class="blog-reading-progress" role="progressbar" aria-label="Blog section reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <span></span>
+        <p class="blog-eyebrow">Portfolio · Technical Publications</p>
+        <h2 class="heading">Cybersecurity &amp; <span>Technical Insights</span></h2>
+        <p class="section-subtitle">Practical notes on network analysis, Linux security, authorized testing, and small tools for investigating security data. Articles distinguish observed evidence from interpretation.</p>
+
+        <label class="blog-search-label" for="blogSearch">Search publications</label>
+        <input class="blog-search" id="blogSearch" type="search" placeholder="Search title, topic, or keyword" autocomplete="off">
+
+        <nav class="blog-filters" aria-label="Filter publications by category">
+            <button class="blog-filter is-active" type="button" data-blog-filter="all" aria-pressed="true">All</button>
+            <button class="blog-filter" type="button" data-blog-filter="Cybersecurity" aria-pressed="false">Cybersecurity</button>
+            <button class="blog-filter" type="button" data-blog-filter="Networking" aria-pressed="false">Networking</button>
+            <button class="blog-filter" type="button" data-blog-filter="Linux" aria-pressed="false">Linux</button>
+            <button class="blog-filter" type="button" data-blog-filter="Programming" aria-pressed="false">Programming</button>
+            <button class="blog-filter" type="button" data-blog-filter="Security Testing" aria-pressed="false">Security Testing</button>
+        </nav>
+
+        <div id="blogFeatured" aria-live="polite"></div>
+
+        <div class="blog-list-heading">
+            <h3>Articles &amp; project records</h3>
+            <p id="blogResultCount" aria-live="polite"></p>
         </div>
         <div class="blog-grid" id="blogGrid">
             <!-- Dynamically populated from config/portfolioData.js -->
         </div>
+
     </div>
 </section>
 
@@ -263,145 +281,6 @@
                 </div>
                 <h3>Continuous Learning</h3>
                 <p>I treat lab exercises as practice for real incidents, capturing what worked and what needs improvement.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Service section (reframed as focus areas) -->
-<section class="services active" id="services">
-    <h2 class="heading">Areas of <span>Expertise</span></h2>
-    <div class="services-container">
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-shield"></i>
-        </div>
-        <h3>Security Auditing</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ Review system configuration and controls</li>
-                <li>✓ Translate findings into practical remediation steps</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-target-lock"></i>
-        </div>
-        <h3>Penetration Testing</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ Network and application reconnaissance</li>
-                <li>✓ Report real attack paths and exploit risks</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-terminal"></i>
-        </div>
-        <h3>Linux Administration</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ System hardening and user access control</li>
-                <li>✓ Bash scripting for automation and monitoring</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-network-chart"></i>
-        </div>
-        <h3>Incident Response</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ Rapid log review and containment guidance</li>
-                <li>✓ Root cause analysis and recovery notes</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-code-alt"></i>
-        </div>
-        <h3>Python Automation</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ Scripts for scanning, parsing, and reporting</li>
-                <li>✓ Tooling to speed up repetitive security tasks</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="service-box">
-        <div class="icon">
-            <i class="bx bx-search-alt"></i>
-        </div>
-        <h3>Vulnerability Assessment</h3>
-        <div class="service-details">
-            <ul>
-                <li>✓ Identify weak points before they become incidents</li>
-                <li>✓ Validate fixes with follow-up checks</li>
-            </ul>
-        </div>
-    </div>
-
-    </div>
-</section>
-
-<!-- Insights section -->
-<section class="testimonials active" id="reports">
-    <div class="testimonials-container">
-        <h2 class="heading">Security Lab <span>Reports</span></h2>
-        <p class="testimonials-subtitle">Lab notes and technical findings from real hands-on security exercises</p>
-
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    <h4>Wazuh SIEM Lab</h4>
-                    <p class="testimonial-text">I deployed Wazuh on Ubuntu to collect system and application logs, then built a detection rule for failed SSH login chains. The lab shows how an endpoint alert maps back to host activity.</p>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    <h4>Network Reconnaissance Practice</h4>
-                    <p class="testimonial-text">Using Nmap and a Python scanner, I mapped a segmented lab network and identified services running on hidden hosts. The focus was on making the output easier to review under time pressure.</p>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    <h4>Linux Log Analysis</h4>
-                    <p class="testimonial-text">I processed SSH, auth, and audit logs to separate routine activity from suspicious behavior, then documented the trigger patterns and next steps for investigation.</p>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-content">
-                    <h4>Port Scanning Workflow</h4>
-                    <p class="testimonial-text">I created a port scanner script that labels likely services and filters noisy results, which made it simpler to focus on real exposure points rather than raw scan output.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="testimonials-stats">
-            <div class="stat-box">
-                <div class="stat-number">4.0</div>
-                <div class="stat-label">Average Lab Reports</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">7+</div>
-                <div class="stat-label">Tools Used</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">5+</div>
-                <div class="stat-label">Project References</div>
             </div>
         </div>
     </div>
@@ -541,10 +420,8 @@
 
     <!-- configuration and scripts -->
      <script type="module" src="config/portfolioData.js" defer></script>
+     <script src="config/blogArticles.js" defer></script>
      <script src="script.js" defer></script>
 </body>
 
 </html>
-
-
-

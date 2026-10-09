@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCertificateModal();
     initializeSectionEffects();
     initializeScrollAnimations();
-    initializeBlogReadingProgress();
     document.body.classList.add('motion-ready');
 });
 
@@ -238,7 +237,7 @@ function populateProjects() {
     grid.innerHTML = portfolioConfig.projects.map(project => `
         <div class="project-card">
             <div class="project-image">
-                ${project.image || project.screenshot ? `<img src="${project.image || project.screenshot}" alt="${project.title} screenshot" loading="lazy">` : `<i class='bx bx-code'></i>`}
+                ${project.image || project.screenshot ? `<img src="${project.image || project.screenshot}" alt="${project.imageAlt || `${project.title} screenshot`}" loading="lazy">` : `<i class='bx bx-code'></i>`}
             </div>
             <div class="project-content">
                 <h3 class="project-title">${project.title}</h3>
@@ -272,6 +271,7 @@ function populateSkills() {
                 </div>
                 <h3 class="skill-category-name">${category}</h3>
             </div>
+            <p class="skill-category-description">${data.description}</p>
             <div class="skill-list">
                 ${data.items.map(item => `
                     <div class="skill-item">
@@ -291,22 +291,37 @@ function populateHomeLab() {
     grid.innerHTML = portfolioConfig.homeLabs.map(lab => `
         <div class="lab-card">
             <div class="lab-image">
-                ${lab.image ? `<img src="${lab.image}" alt="${lab.title} screenshot" loading="lazy">` : `<i class='bx bx-server'></i>`}
+                ${lab.image ? `<img src="${lab.image}" alt="${lab.imageAlt || `${lab.title} screenshot`}" loading="lazy">` : `<i class='bx bx-server'></i>`}
             </div>
             <div class="lab-content">
+                <div class="lab-heading">
                 <h3 class="lab-title">${lab.title}</h3>
+                <span class="lab-status">${lab.status}</span>
+                </div>
+                ${lab.category ? `<p class="lab-category">${lab.category}${lab.priority ? ` · ${lab.priority} priority` : ''}</p>` : ''}
                 <p class="lab-description">${lab.description}</p>
                 <div class="lab-infrastructure">
                     ${lab.infrastructure.map(infra => `<span class="infra-badge">${infra}</span>`).join('')}
                 </div>
-                <div class="lab-links">
-                <a href="${lab.githubUrl || lab.githubLink || DEFAULT_GITHUB_URL}" target="_blank" rel="noopener noreferrer" class="lab-link">
-                    <i class='bx bxl-github'></i> View on GitHub
-                </a>
-                ${lab.reportUrl && lab.reportUrl !== '#' ? `<a href="${lab.reportUrl}" target="_blank" rel="noopener noreferrer" class="lab-link">
-                    View Lab Report <i class='bx bx-right-arrow-alt'></i>
-                </a>` : ''}
-                </div>
+                <details class="lab-details">
+                    <summary>Project outline</summary>
+                    <div class="lab-details-content">
+                        <h4>Methodology</h4>
+                        <ul>${lab.methodology.map(step => `<li>${step}</li>`).join('')}</ul>
+                        <h4>Evidence to collect</h4>
+                        <ul>${lab.evidence.map(item => `<li>${item}</li>`).join('')}</ul>
+                        <h4>Outcome</h4>
+                        <p>${lab.outcome}</p>
+                    </div>
+                </details>
+                ${lab.githubUrl || lab.githubLink || lab.reportUrl ? `<div class="lab-links">
+                    ${lab.githubUrl || lab.githubLink ? `<a href="${lab.githubUrl || lab.githubLink}" target="_blank" rel="noopener noreferrer" class="lab-link">
+                        <i class='bx bxl-github'></i> View Project
+                    </a>` : ''}
+                    ${lab.reportUrl && lab.reportUrl !== '#' ? `<a href="${lab.reportUrl}" target="_blank" rel="noopener noreferrer" class="lab-link">
+                        View Lab Report <i class='bx bx-right-arrow-alt'></i>
+                    </a>` : ''}
+                </div>` : ''}
             </div>
         </div>
     `).join('');
@@ -315,39 +330,133 @@ function populateHomeLab() {
 // ========== BLOG SECTION ==========
 function populateBlog() {
     const grid = document.getElementById('blogGrid');
-    if (!grid || !portfolioConfig || !portfolioConfig.blog) return;
+    const featured = document.getElementById('blogFeatured');
+    const resultCount = document.getElementById('blogResultCount');
+    if (!grid || !featured || !resultCount) return;
 
-    grid.innerHTML = portfolioConfig.blog.map(article => `
-        <div class="blog-card">
-            <div class="blog-image">
-                ${article.image || article.thumbnail ? `<img src="${article.image || article.thumbnail}" alt="${article.title} thumbnail" loading="lazy">` : `<i class='bx bx-pen'></i>`}
-            </div>
-            <div class="blog-content">
-                <h3 class="blog-title">${article.title}</h3>
-                <p class="blog-summary">${article.excerpt}</p>
+    if (!Array.isArray(window.blogArticles) || !Array.isArray(portfolioConfig?.blogProjects)) {
+        throw new Error('Blog articles or project records could not be loaded.');
+    }
+
+    const articles = window.blogArticles;
+    const projects = portfolioConfig.blogProjects;
+    const featuredArticle = articles[0];
+    if (!featuredArticle) {
+        throw new Error('The blog needs a valid article to feature.');
+    }
+
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[character]);
+    const getReadingTime = article => {
+        const text = [
+            article.title,
+            article.excerpt,
+            ...article.sections.flatMap(section => [
+                section.heading,
+                ...section.paragraphs,
+                ...(section.list || [])
+            ])
+        ].join(' ');
+        const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+        return Math.max(1, Math.ceil(wordCount / 200));
+    };
+    const formatDate = date => new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'UTC'
+    }).format(new Date(`${date}T00:00:00Z`));
+    const articleUrl = article => `article.html?slug=${encodeURIComponent(article.slug)}`;
+
+    featured.innerHTML = `
+        <article class="blog-featured" data-category="${escapeHtml(featuredArticle.category)}" data-search="${escapeHtml(`${featuredArticle.title} ${featuredArticle.excerpt} ${featuredArticle.category}`.toLowerCase())}">
+            <div class="blog-featured-copy">
+                <p class="blog-featured-kicker">Featured article · ${escapeHtml(featuredArticle.category)}</p>
+                <h3>${escapeHtml(featuredArticle.title)}</h3>
+                <p>${escapeHtml(featuredArticle.excerpt)}</p>
                 <div class="blog-meta">
-                    <span>${article.date}</span>
+                    <time datetime="${escapeHtml(featuredArticle.published)}">${formatDate(featuredArticle.published)}</time>
+                    <span>${getReadingTime(featuredArticle)} min read</span>
                 </div>
-                ${article.url ? `<button class="blog-read-more" data-article-id="${article.id}">
-                    Read More →
-                </button>` : ''}
-                <a href="${article.githubUrl || article.githubLink || DEFAULT_GITHUB_URL}" target="_blank" rel="noopener noreferrer" class="blog-read-more">
-                    <i class='bx bxl-github'></i> GitHub Repository
-                </a>
+                <a class="blog-featured-link" href="${articleUrl(featuredArticle)}">Read article <span aria-hidden="true">→</span></a>
             </div>
-        </div>
-    `).join('');
-    
-    // Add event listener for blog read more buttons
-    grid.querySelectorAll('button.blog-read-more[data-article-id]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const articleId = btn.getAttribute('data-article-id');
-            const article = portfolioConfig.blog.find(a => String(a.id) === articleId);
-            if (article && article.url) {
-                window.location.href = article.url;
-            }
+        </article>
+    `;
+
+    const otherArticles = articles.slice(1);
+    const articleCards = otherArticles.map(article => `
+        <article class="blog-card" data-category="${escapeHtml(article.category)}" data-search="${escapeHtml(`${article.title} ${article.excerpt} ${article.category}`.toLowerCase())}">
+            <div class="blog-content">
+                <div class="blog-card-meta">
+                    <span class="blog-category">${escapeHtml(article.category)}</span>
+                    <span class="blog-status">Article</span>
+                </div>
+                <h3 class="blog-title"><a href="${articleUrl(article)}">${escapeHtml(article.title)}</a></h3>
+                <p class="blog-summary">${escapeHtml(article.excerpt)}</p>
+                <div class="blog-meta">
+                    <time datetime="${escapeHtml(article.published)}">${formatDate(article.published)}</time>
+                    <span>${getReadingTime(article)} min read</span>
+                </div>
+                <a class="blog-card-link" href="${articleUrl(article)}">Read article <span aria-hidden="true">→</span></a>
+            </div>
+        </article>
+    `);
+    const projectCards = projects.map(project => `
+        <article class="blog-card" data-category="${escapeHtml(project.category)}" data-search="${escapeHtml(`${project.title} ${project.excerpt} ${project.category}`.toLowerCase())}">
+            ${project.image ? `<div class="blog-image"><img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.imageAlt)}" loading="lazy"></div>` : ''}
+            <div class="blog-content">
+                <div class="blog-card-meta">
+                    <span class="blog-category">${escapeHtml(project.category)}</span>
+                    <span class="blog-status">Project record</span>
+                </div>
+                <h3 class="blog-title">${escapeHtml(project.title)}</h3>
+                <p class="blog-summary">${escapeHtml(project.excerpt)}</p>
+                <a class="blog-card-link" href="${escapeHtml(project.githubUrl)}" target="_blank" rel="noopener noreferrer">View project repository <span aria-hidden="true">↗</span></a>
+            </div>
+        </article>
+    `);
+    grid.innerHTML = [...articleCards, ...projectCards].join('');
+
+    const filters = [...document.querySelectorAll('[data-blog-filter]')];
+    const search = document.getElementById('blogSearch');
+    let activeCategory = 'all';
+    const updateResults = () => {
+        const query = search.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        grid.querySelectorAll('.blog-card').forEach(card => {
+            const categoryMatches = activeCategory === 'all' || card.dataset.category === activeCategory;
+            const queryMatches = !query || card.dataset.search.includes(query);
+            card.hidden = !categoryMatches || !queryMatches;
+            if (!card.hidden) visibleCount += 1;
+        });
+
+        const featuredCard = featured.querySelector('.blog-featured');
+        const featureCategoryMatches = activeCategory === 'all' || featuredCard.dataset.category === activeCategory;
+        const featureQueryMatches = !query || featuredCard.dataset.search.includes(query);
+        featuredCard.hidden = !featureCategoryMatches || !featureQueryMatches;
+
+        resultCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'item' : 'items'}${featuredCard.hidden ? '' : ' · 1 featured article'}`;
+    };
+
+    filters.forEach(filter => {
+        filter.addEventListener('click', () => {
+            activeCategory = filter.dataset.blogFilter;
+            filters.forEach(button => {
+                const isActive = button === filter;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', String(isActive));
+            });
+            updateResults();
         });
     });
+    search.addEventListener('input', updateResults);
+    updateResults();
 }
 
 // ========== CONTACT FORM ==========
@@ -580,30 +689,6 @@ function initializeScrollAnimations() {
     revealVisibleElements();
 }
 
-function initializeBlogReadingProgress() {
-    const blogSection = document.getElementById('blog');
-    const progressBar = document.querySelector('.blog-reading-progress');
-    const progressFill = progressBar?.querySelector('span');
-
-    if (!blogSection || !progressBar || !progressFill) return;
-
-    const updateProgress = () => {
-        const sectionTop = blogSection.offsetTop;
-        const scrollableDistance = blogSection.offsetHeight - window.innerHeight;
-        const progress = scrollableDistance > 0
-            ? Math.min(1, Math.max(0, (window.scrollY - sectionTop) / scrollableDistance))
-            : (window.scrollY >= sectionTop ? 1 : 0);
-        const percentage = Math.round(progress * 100);
-
-        progressFill.style.transform = `scaleX(${progress})`;
-        progressBar.setAttribute('aria-valuenow', String(percentage));
-    };
-
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-    updateProgress();
-}
-
 // Count the existing portfolio metrics without inventing skill percentages.
 const pendingStats = new Set(document.querySelectorAll('.stats, .testimonials-stats'));
 let statsObserver;
@@ -654,6 +739,11 @@ function animateCounter(element, start, end, duration, originalValue) {
     const numericValue = originalValue.match(/[\d.]+/);
     const decimalPlaces = numericValue?.[0].split('.')[1]?.length || 0;
     const suffix = originalValue.slice(numericValue[0].length);
+    let valueNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+    if (!valueNode) {
+        valueNode = document.createTextNode('');
+        element.appendChild(valueNode);
+    }
     
     function updateCounter(currentTime) {
         const elapsed = currentTime - startTime;
@@ -662,7 +752,7 @@ function animateCounter(element, start, end, duration, originalValue) {
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const current = (start + (end - start) * easeOutQuart).toFixed(decimalPlaces);
         
-        element.textContent = current + suffix;
+        valueNode.nodeValue = current + suffix;
         
         if (progress < 1) {
             requestAnimationFrame(updateCounter);
