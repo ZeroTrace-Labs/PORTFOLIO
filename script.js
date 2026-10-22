@@ -1,10 +1,5 @@
 ﻿// ========== INITIALIZATION ==========
 const DEFAULT_GITHUB_URL = 'https://github.com/ZeroTrace-Labs';
-const EMAILJS_CONFIG = {
-    publicKey: '',
-    serviceId: '',
-    templateId: ''
-};
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeHomeTypewriter();
@@ -463,12 +458,8 @@ function populateBlog() {
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.querySelector('.form-message');
 
-if (EMAILJS_CONFIG.publicKey && window.emailjs) {
-    window.emailjs.init(EMAILJS_CONFIG.publicKey);
-}
-
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const formData = new FormData(this);
@@ -482,35 +473,34 @@ if (contactForm) {
             return;
         }
 
-        if (!EMAILJS_CONFIG.publicKey || !EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !window.emailjs) {
-            showFormMessage('The message form is not configured yet. Please email me directly at morganke254@gmail.com.', 'error');
-            return;
-        }
-
         showFormMessage('Sending message...', 'info');
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
 
-        const templateParams = {
-            from_name: name.trim(),
-            from_email: email.trim(),
-            subject: subject.trim(),
-            message: message.trim(),
-            to_email: 'morganke254@gmail.com'
-        };
-
-        window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams)
-            .then(function(response) {
-                showFormMessage('Thank you for your message! I will get back to you soon.', 'success');
-                contactForm.reset();
-            }, function(error) {
-                console.error('Failed to send email:', error);
-                showFormMessage('Sorry, there was an error. Please contact me at morganke254@gmail.com.', 'error');
+        try {
+            const response = await fetch(contactForm.action, {
+                method: contactForm.method,
+                body: formData
             });
+            const result = await response.json();
 
-        setTimeout(() => {
-            if (formMessage.classList.contains('success')) {
-                formMessage.style.display = 'none';
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || `Request failed with status ${response.status}`);
             }
-        }, 5000);
+
+            showFormMessage('Thank you for your message! I will get back to you soon.', 'success');
+            contactForm.reset();
+            setTimeout(() => {
+                if (formMessage.classList.contains('success')) {
+                    formMessage.style.display = 'none';
+                }
+            }, 5000);
+        } catch (error) {
+            console.error('Failed to send contact form:', error);
+            showFormMessage('Sorry, there was an error. Please contact me at morganmutugi02@gmail.com.', 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
     });
 }
 

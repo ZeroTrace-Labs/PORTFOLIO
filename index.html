@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,8 +16,6 @@
     <meta property="og:url" content="https://morganmutugi.com">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
-    <!-- EmailJS Library -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -50,15 +48,15 @@
             <div class="professional-highlights">
                 <div class="highlight-item">
                     <i class='bx bx-shield' aria-hidden="true"></i>
-                    <span>Threat Analysis</span>
+                    <span>Cybersecurity</span>
                 </div>
                 <div class="highlight-item">
                     <i class='bx bx-search-alt' aria-hidden="true"></i>
-                    <span>Vulnerability Assessment</span>
+                    <span>Quality Assurance Tester</span>
                 </div>
                 <div class="highlight-item">
                     <i class='bx bxl-linux' aria-hidden="true"></i>
-                    <span>System Hardening</span>
+                    <span>Programming</span>
                 </div>
             </div>
 
@@ -80,7 +78,7 @@
             </div>
 
             <div class="btn-sci">
-            <a href="mailto:morganke254@gmail.com?subject=Request%20for%20professional%20CV" class="btn">Request Professional CV</a>
+            <a href="mailto:morganmutugi02@gmail.com?subject=Request%20for%20professional%20CV" class="btn">Request Professional CV</a>
             <div class="sci">
                 <a href="https://github.com/ZeroTrace-Labs" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile"><i class='bx bxl-github'></i></a>
                 <a href="https://www.linkedin.com/in/morgan-mutugi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile"><i class='bx bxl-linkedin'></i></a>
@@ -290,57 +288,75 @@
 <section class="contact active" id="contact" data-effect="blur-in">
     <div class="contact-container">
         <h2 class="heading">Get In <span>Touch</span></h2>
+        <p class="section-subtitle">Have a question or a project in mind? Send me a message and I’ll get back to you.</p>
         <div class="contact-content">
-            <div class="contact-info">
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <i class="bx bx-envelope"></i>
-                    </div>
-                    <h3>Email</h3>
-                    <p>morganke254@gmail.com</p>
-                    <a href="mailto:morganke254@gmail.com" class="contact-link">Send Email</a>
+            <div class="contact-info" aria-label="Contact details">
+                <div class="contact-info-intro">
+                    <h3>Get in touch</h3>
+                    <p>I’m happy to talk about opportunities, collaborations, or any questions you have.</p>
                 </div>
 
-                <div class="contact-card">
+                <div class="contact-card contact-detail-card">
                     <div class="contact-icon">
-                        <i class="bx bx-phone"></i>
+                        <i class="bx bx-envelope" aria-hidden="true"></i>
                     </div>
-                    <h3>Phone</h3>
-                    <p>+254 707 501 020</p>
-                    <a href="tel:+254707501020" class="contact-link">Call Now</a>
+                    <div class="contact-card-copy">
+                        <h3>Email me</h3>
+                        <a href="mailto:morganmutugi02@gmail.com">morganmutugi02@gmail.com</a>
+                    </div>
                 </div>
 
-                <div class="contact-card">
+                <div class="contact-card contact-detail-card">
                     <div class="contact-icon">
-                        <i class="bx bx-map"></i>
+                        <i class="bx bx-phone" aria-hidden="true"></i>
                     </div>
-                    <h3>Location</h3>
-                    <p>Kenya</p>
-                    <a href="https://www.google.com/maps/place/1%C2%B002'17.9%22S+37%C2%B004'36.5%22E/@-1.0382714,37.0741952,17z/data=!4m4!3m3!8m2!3d-1.0382929!4d37.076813?hl=en&entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="contact-link">View Map</a>
+                    <div class="contact-card-copy">
+                        <h3>Call me</h3>
+                        <a href="tel:+254707501020">+254 707 501 020</a>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <h3>Follow me</h3>
+                    <div class="social-icons">
+                        <a href="https://github.com/ZeroTrace-Labs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+                            <i class="bx bxl-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/morgan-mutugi" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+                            <i class="bx bxl-linkedin"></i>
+                        </a>
+                        <a href="https://www.instagram.com/soweto_.badest" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                            <i class="bx bxl-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com/@hackops254" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
+                            <i class="bx bxl-youtube"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div class="contact-form">
-                <h3>Send Message</h3>
-                <form id="contactForm">
+                <h3>Send us a message</h3>
+                <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="dae9c984-c01b-4333-8123-642af7bb5871">
                     <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
                         <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required>
                     </div>
 
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
                         <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your email address" autocomplete="email" required>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
                         <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="What is this about?" required>
                     </div>
 
                     <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
                         <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Write your message here..." rows="3" required></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">
@@ -352,54 +368,50 @@
                 <div id="formMessage" class="form-message"></div>
             </div>
         </div>
-
-        <footer class="mobile-contact-footer">
-            <h3>Contact Details</h3>
-            <div class="mobile-contact-details">
-                <a href="mailto:morganke254@gmail.com" class="mobile-contact-item">
-                    <i class="bx bx-envelope" aria-hidden="true"></i>
-                    <span>
-                        <span class="mobile-contact-label">Email</span>
-                        <span class="mobile-contact-value">morganke254@gmail.com</span>
-                    </span>
-                </a>
-                <a href="tel:+254707501020" class="mobile-contact-item">
-                    <i class="bx bx-phone" aria-hidden="true"></i>
-                    <span>
-                        <span class="mobile-contact-label">Phone</span>
-                        <span class="mobile-contact-value">+254 707 501 020</span>
-                    </span>
-                </a>
-                <a href="https://www.google.com/maps/place/1%C2%B002'17.9%22S+37%C2%B004'36.5%22E/@-1.0382714,37.0741952,17z/data=!4m4!3m3!8m2!3d-1.0382929!4d37.076813?hl=en&entry=ttu&g_ep=EgoyMDI2MDQyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="mobile-contact-item">
-                    <i class="bx bx-map" aria-hidden="true"></i>
-                    <span>
-                        <span class="mobile-contact-label">Location</span>
-                        <span class="mobile-contact-value">Kenya · View map</span>
-                    </span>
-                    <i class="bx bx-link-external mobile-contact-external" aria-hidden="true"></i>
-                </a>
-            </div>
-        </footer>
-
-        <div class="social-links">
-            <h3>Follow Me</h3>
-            <div class="social-icons">
-                <a href="https://github.com/ZeroTrace-Labs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
-                    <i class="bx bxl-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/morgan-mutugi" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
-                    <i class="bx bxl-linkedin"></i>
-                </a>
-                <a href="https://www.instagram.com/soweto_.badest" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-                    <i class="bx bxl-instagram"></i>
-                </a>
-                <a href="https://youtube.com/@hackops254" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
-                    <i class="bx bxl-youtube"></i>
-                </a>
-            </div>
-        </div>
     </div>
 </section>
+
+<footer class="portfolio-footer">
+    <div class="portfolio-footer-inner">
+        <div class="portfolio-footer-brand">
+            <a class="portfolio-footer-logo" href="#home" aria-label="ZeroTrace Labs home">
+                <span class="portfolio-footer-mark" aria-hidden="true">Z</span>
+                <span>ZeroTrace <span>Labs</span></span>
+            </a>
+            <p>Thanks for visiting. Explore my work or get in touch to start a conversation.</p>
+            <div class="portfolio-footer-socials" aria-label="Social media">
+                <a href="https://github.com/ZeroTrace-Labs" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bx bxl-github"></i></a>
+                <a href="https://www.linkedin.com/in/morgan-mutugi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a>
+                <a href="https://www.instagram.com/soweto_.badest" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="https://youtube.com/@hackops254" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="bx bxl-youtube"></i></a>
+            </div>
+        </div>
+
+        <div class="portfolio-footer-column">
+            <h3>Explore</h3>
+            <a href="#about">About me</a>
+            <a href="#projects">Projects</a>
+            <a href="#blog">Articles</a>
+        </div>
+
+        <div class="portfolio-footer-column">
+            <h3>Contact</h3>
+            <a href="mailto:morganmutugi02@gmail.com">Email me</a>
+            <a href="tel:+254707501020">Call +254 707 501 020</a>
+            <a href="#contact">Send a message</a>
+        </div>
+
+        <div class="portfolio-footer-column portfolio-footer-note">
+            <h3>Let’s connect</h3>
+            <p>Open to professional opportunities, collaborations, and conversations about technology.</p>
+            <a class="portfolio-footer-cta" href="mailto:morganmutugi02@gmail.com">Start a conversation <i class="bx bx-right-arrow-alt" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <div class="portfolio-footer-bottom">
+        <p>© 2026 Morgan Mutugi. All rights reserved.</p>
+        <a href="#home">Back to top <i class="bx bx-up-arrow-alt" aria-hidden="true"></i></a>
+    </div>
+</footer>
 
 <div id="certModal" class="cert-modal" aria-hidden="true">
     <div class="modal-content">

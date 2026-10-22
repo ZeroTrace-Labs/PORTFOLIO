@@ -252,28 +252,13 @@ github: {
 
 ---
 
-##  Contact & EmailJS Setup
+##  Contact Form Setup
 
 To enable email functionality:
 
-1. Sign up at [EmailJS](https://www.emailjs.com/)
-2. Create an email service (connect Gmail, Outlook, etc.)
-3. Create an email template with these variables:
-   - `{{from_name}}`
-   - `{{from_email}}`
-   - `{{subject}}`
-   - `{{message}}`
-   - `{{to_email}}`
-
-4. Update the `EMAILJS_CONFIG` object near the top of `script.js`:
-```javascript
-const EMAILJS_CONFIG = {
-    publicKey: 'YOUR_PUBLIC_KEY',
-    serviceId: 'YOUR_SERVICE_ID',
-    templateId: 'YOUR_TEMPLATE_ID'
-};
-```
-The form displays a direct-email fallback until all three values are configured.
+1. Create a form at [Web3Forms](https://web3forms.com/) using the email address shown in the Contact section.
+2. Copy its access key into the hidden `access_key` input in the contact form in `index.html`.
+3. The form posts to Web3Forms and reports success or failure in the Contact section.
 
 ---
 
@@ -298,7 +283,7 @@ The form displays a direct-email fallback until all three values are configured.
 2. Test all sections on tablet (768-1024px)
 3. Test all sections on desktop (> 1024px)
 4. Test GitHub API integration
-5. Test contact form with EmailJS
+5. Test contact form with Web3Forms
 6. Test navigation functionality
 
 ---
@@ -349,7 +334,7 @@ The existing "Services" section was moved down in priority to emphasize cybersec
 
 -  No sensitive data in code
 -  GitHub token not required (public API used)
--  Email credentials handled by EmailJS
+-  Contact form submissions handled by Web3Forms
 -  Input validation on forms
 -  No external vulnerabilities
 

@@ -162,18 +162,8 @@ assets/
 5. **Certification verification URLs**: Each cert's `verificationUrl`
 6. **Project links**: Each project's `githubUrl`, `demoUrl`, `reportUrl`
 
-### In `script.js` (for EmailJS):
-Fill in the `EMAILJS_CONFIG` object near the top of the file:
-```javascript
-const EMAILJS_CONFIG = {
-    publicKey: 'YOUR_PUBLIC_KEY',
-    serviceId: 'YOUR_SERVICE_ID',
-    templateId: 'YOUR_TEMPLATE_ID'
-};
-```
-
-Replace with your EmailJS credentials from: https://www.emailjs.com/
-Until configured, the contact form will direct visitors to email you directly.
+### Contact form (Web3Forms):
+The contact form in `index.html` submits to Web3Forms. To change the recipient, create or update the form at https://web3forms.com/ with the desired email address and replace the hidden `access_key` value with the key provided there.
 
 ##  Testing Checklist
 
@@ -263,7 +253,7 @@ Look for `transition:` values in CSS, change from `0.3s` to your preferred durat
 - Keep your GitHub token private (if using authenticated API)
 - Use HTTPS for your custom domain
 - Validate all user inputs on the contact form
-- Keep EmailJS credentials in production settings
+- Keep the Web3Forms access key in the contact form's hidden input and configure spam protection in Web3Forms
 
 ##  Troubleshooting
 
@@ -283,14 +273,14 @@ Look for `transition:` values in CSS, change from `0.3s` to your preferred durat
 - GitHub API might be rate-limited (wait 1 hour)
 
 ### Contact form not working
-- Verify EmailJS public key is set
-- Check service ID and template ID
-- Verify email template variables match
+- Verify the Web3Forms access key in the hidden `access_key` field in `index.html`
+- Confirm the recipient email address has been verified with Web3Forms
+- Check the browser console and Web3Forms dashboard for submission errors
 
 ##  Resources
 
 - **Boxicons**: https://boxicons.com (for icons)
-- **EmailJS**: https://www.emailjs.com (for email)
+- **Web3Forms**: https://web3forms.com (for contact form email)
 - **GitHub API**: https://docs.github.com/en/rest
 - **CSS Reference**: https://developer.mozilla.org/en-US/docs/Web/CSS
 
